@@ -1,6 +1,7 @@
 # Winser
-Winser is windows service management. Winser is writen using Go/Fyne.
+Winser is windows service management. Winser is writen using Wails V2.
 
+![Alt text](/docs/screenshots/winser.png "Winser")
 ## Feature
 * Create
 * Remove
