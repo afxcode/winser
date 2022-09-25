@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .fx-input {
+        @apply text-xs mb-2 mr-2 px-2 py-0 placeholder-slate-300 text-slate-600 relative bg-white rounded border-0 outline-none focus:outline-none focus:ring;
+    }
+    .fx-input-label {
+        @apply text-xs mb-2 font-semibold inline-block py-1 px-2 rounded text-slate-600;
+    }
+
+    .fx-btn-secondary {
+        @apply bg-gray-500 text-white active:bg-gray-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-primary {
+        @apply bg-blue-500 text-white active:bg-blue-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-success {
+        @apply bg-green-500 text-white active:bg-green-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-warning {
+        @apply bg-orange-500 text-white active:bg-orange-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-danger {
+        @apply bg-red-500 text-white active:bg-red-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+
+    .fx-lbl-success {
+        @apply text-emerald-600 bg-emerald-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
+    }
+}
