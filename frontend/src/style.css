@@ -29,4 +29,8 @@
     .fx-lbl-success {
         @apply text-emerald-600 bg-emerald-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
     }
+
+    .fx-statusbar {
+        @apply bg-gray-500 text-white active:bg-gray-600  inline-block text-xs mx-2 py-1 px-2 mb-2;
+    }
 }
