@@ -18,6 +18,10 @@ export function Remove(arg1) {
   return window['go']['main']['App']['Remove'](arg1);
 }
 
+export function SelectExecutable(arg1) {
+  return window['go']['main']['App']['SelectExecutable'](arg1);
+}
+
 export function Start(arg1) {
   return window['go']['main']['App']['Start'](arg1);
 }

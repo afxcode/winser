@@ -10,6 +10,8 @@ export function Pause(arg1:string):Promise<Error>;
 
 export function Remove(arg1:string):Promise<Error>;
 
+export function SelectExecutable(arg1:string):Promise<string>;
+
 export function Start(arg1:string):Promise<Error>;
 
 export function Stop(arg1:string):Promise<Error>;

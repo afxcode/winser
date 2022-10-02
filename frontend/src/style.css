@@ -10,11 +10,14 @@
         @apply text-xs mb-2 font-semibold inline-block py-1 px-2 rounded text-slate-600;
     }
 
+    .fx-btn-primary {
+        @apply bg-blue-500 text-white active:bg-blue-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
     .fx-btn-secondary {
         @apply bg-gray-500 text-white active:bg-gray-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
     }
-    .fx-btn-primary {
-        @apply bg-blue-500 text-white active:bg-blue-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    .fx-btn-info {
+        @apply bg-cyan-500 text-white active:bg-cyan-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
     }
     .fx-btn-success {
         @apply bg-green-500 text-white active:bg-green-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
@@ -26,8 +29,23 @@
         @apply bg-red-500 text-white active:bg-red-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
     }
 
+    .fx-lbl-primary {
+        @apply text-blue-600 bg-blue-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
+    }
+    .fx-lbl-secondary {
+        @apply text-gray-600 bg-gray-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
+    }
+    .fx-lbl-info {
+        @apply text-cyan-600 bg-cyan-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
+    }
     .fx-lbl-success {
-        @apply text-emerald-600 bg-emerald-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
+        @apply text-green-600 bg-green-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
+    }
+    .fx-lbl-warning {
+        @apply text-orange-600 bg-orange-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
+    }
+    .fx-lbl-danger {
+        @apply text-red-600 bg-red-200 text-center font-semibold inline-block text-xs mx-2 py-1 px-2 mb-2 uppercase rounded;
     }
 
     .fx-statusbar {

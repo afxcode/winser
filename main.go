@@ -18,15 +18,15 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:     "Winser - Windows Service Manager",
 		Width:     600,
-		Height:    260,
+		Height:    370,
 		MinWidth:  600,
-		MinHeight: 260,
+		MinHeight: 370,
 		MaxWidth:  600,
-		MaxHeight: 260,
+		MaxHeight: 370,
 		Assets:    assets,
 		// BackgroundColour: &options.RGBA{R: 255, G: 255, B: 255, A: 0},
 		OnStartup: app.startup,
-		Bind: []interface{}{
+		Bind: []any{
 			app,
 		},
 	})
