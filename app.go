@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -30,6 +31,18 @@ const (
 	Disabled         StartMode = "disabled"
 	StartModeUnknown StartMode = "unknown"
 )
+
+func (s StartMode) toSvcStartType() uint32 {
+	switch s {
+	case Auto:
+		return mgr.StartAutomatic
+	case Manual:
+		return mgr.StartManual
+	case Disabled:
+		return mgr.StartDisabled
+	}
+	return 0
+}
 
 func startModeFromSvc(startType uint32) StartMode {
 	switch startType {
@@ -103,20 +116,20 @@ func (a *App) Find(name string) (service Service, err error) {
 
 	s, err := m.OpenService(name)
 	if err != nil {
-		err = fmt.Errorf("could not access service: %v", err)
+		err = fmt.Errorf("Could not access %s: %v", name, err)
 		return
 	}
 	defer s.Close()
 
 	sConf, err := s.Config()
 	if err != nil {
-		err = fmt.Errorf("could not access service config: %v", err)
+		err = fmt.Errorf("Could not access config: %v", err)
 		return
 	}
 
 	sStatus, err := s.Query()
 	if err != nil {
-		err = fmt.Errorf("could not access service status: %v", err)
+		err = fmt.Errorf("Could not access %s: %v", name, err)
 		return
 	}
 
@@ -177,9 +190,41 @@ func (a *App) SelectExecutable(currentExecutable string) (selectedExecutable str
 	return
 }
 
-func (a *App) Create(service Service) (err error) {
+func (a *App) Install(service Service) error {
+	fi, err := os.Stat(service.Executable)
+	if err == nil {
+		if fi.Mode().IsDir() {
+			return fmt.Errorf("Executable is a directory")
+		}
+	}
 
-	return
+	m, err := mgr.Connect()
+	if err != nil {
+		return err
+	}
+	defer m.Disconnect()
+
+	s, err := m.OpenService(service.Name)
+	if err == nil {
+		s.Close()
+		return fmt.Errorf("Service %s already exist", service.Name)
+	}
+
+	s, err = m.CreateService(
+		service.Name,
+		service.Executable,
+		mgr.Config{
+			StartType:   service.StartMode.toSvcStartType(),
+			DisplayName: service.DisplayName,
+			Description: service.Description,
+		},
+		strings.Split(service.Argument, " ")...,
+	)
+	if err != nil {
+		return err
+	}
+	defer s.Close()
+	return nil
 }
 
 func (a *App) Update(service Service) (err error) {
@@ -188,8 +233,19 @@ func (a *App) Update(service Service) (err error) {
 }
 
 func (a *App) Remove(name string) (err error) {
+	m, err := mgr.Connect()
+	if err != nil {
+		return err
+	}
+	defer m.Disconnect()
 
-	return
+	s, err := m.OpenService(name)
+	if err != nil {
+		return fmt.Errorf("Could not access %s: %v", name, err)
+	}
+	defer s.Close()
+
+	return s.Delete()
 }
 
 // Control

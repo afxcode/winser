@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/caarlos0/go-shellwords v1.0.12
 	github.com/wailsapp/wails/v2 v2.0.0
-	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9
+	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec
 )
 
 require (

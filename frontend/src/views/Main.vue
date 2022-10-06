@@ -9,7 +9,13 @@
                                 <div class="flex flex-col w-4/5">
                                     <div class="flex flex-row">
                                         <label class="w-3/12 fx-input-label "> Service Name </label>
-                                        <input class="w-9/12 fx-input" type="text" v-model="state.name" placeholder="Service Name" />
+                                        <input class="w-7/12 fx-input-sq rounded-l mr-0" type="text" v-model="state.name" placeholder="Service Name" />
+                                        <button class="w-1/12 fx-btn-sq-info h-6 ml-0 mr-0 flex space-x-2 items-center" type="button" :disabled="state.name == ''" @click="findService">
+                                            <MagnifyingGlassIcon class="w-6 h-4" />
+                                        </button>
+                                        <button class="w-1/12 fx-btn-sq-success rounded-r h-6 ml-0 flex space-x-2 items-center" type="button" @click="selectListService">
+                                            <TableCellsIcon class="w-6 h-4" />
+                                        </button>
                                     </div>
                                     <div class="flex flex-row">
                                         <label class="w-3/12 fx-input-label "> Display Name </label>
@@ -30,8 +36,10 @@
                                     </div>
                                     <div class="flex flex-row">
                                         <label class="w-3/12 fx-input-label "> Executable </label>
-                                        <textarea class="w-8/12 fx-input resize-none mr-0" type="text" rows="2" v-model="state.executable" placeholder="Executable" />
-                                        <button class="w-1/12 fx-btn-info h-8 ml-0 flex space-x-2 items-center" type="button" @click="selectExecutable"><FolderOpenIcon class="w-5 h-5"/></button>
+                                        <textarea class="w-8/12 fx-input-sq rounded-l resize-none mr-0" type="text" rows="2" v-model="state.executable" placeholder="Executable" />
+                                        <button class="w-1/12 fx-btn-sq-info rounded-r h-8 ml-0 flex space-x-2 items-center" type="button" :disabled="state.name == ''" @click="selectExecutable">
+                                            <FolderOpenIcon class="w-5 h-5" />
+                                        </button>
                                     </div>
                                     <div class="flex flex-row">
                                         <label class="w-3/12 fx-input-label"> Argument </label>
@@ -48,20 +56,24 @@
                                     <span v-else-if="state.status == 'pending_continue'" class="fx-lbl-warning"> PENDING CONTINUE </span>
                                     <span v-else-if="state.status == 'unknown'" class="fx-lbl-danger"> UNKNOWN </span>
                                     <span v-else class="fx-lbl-danger"> N/A </span>
-                                    <button class="fx-btn-success" type="button"> START </button>
-                                    <button class="fx-btn-danger" type="button"> STOP </button>
-                                    <button class="fx-btn-warning" type="button"> PAUSE </button>
+                                    <button class="fx-btn-success" type="button" :disabled="state.status != 'stopped' && state.status != 'paused'"> START </button>
+                                    <button class="fx-btn-danger" type="button" :disabled="state.status != 'running'"> STOP </button>
+                                    <button class="fx-btn-warning" type="button" :disabled="state.status != 'running'"> PAUSE </button>
                                 </div>
                             </div>
                             <div class="flex flex-row w-full mt-2">
-                                <button class="w-1/5 fx-btn-primary" type="button" :disabled="!state.btnFindEn" @click="find"> FIND </button>
-                                <button class="w-1/5 fx-btn-primary" type="button"> EDIT </button>
-                                <button class="w-1/5 fx-btn-success" type="button"> CREATE </button>
-                                <button class="w-1/5 fx-btn-warning" type="button"> UPDATE </button>
-                                <button class="w-1/5 fx-btn-danger" type="button"> REMOVE </button>
+                                <button class="w-3/12 fx-btn-secondary" type="button" @click="clear"> CLEAR </button>
+                                <button class="w-3/12 fx-btn-success" type="button" :disabled="!isFormValid()" @click="installService"> INSTALL </button>
+                                <button class="w-3/12 fx-btn-warning" type="button" :disabled="!isFormValid()" @click="updateService"> UPDATE </button>
+                                <button class="w-3/12 fx-btn-danger" type="button" :disabled="!isFormValid()" @click="removeService"> REMOVE </button>
                             </div>
                             <div class="flex w-full mt-2">
-                                <span class="fx-statusbar w-full"> {{state.statusbar}} </span>
+                                <span class="w-full" :class="{
+                                    'fx-statusbar-primary': state.statusbarType == 'primary',
+                                    'fx-statusbar-success': state.statusbarType == 'success',
+                                    'fx-statusbar-warning': state.statusbarType == 'warning',
+                                    'fx-statusbar-danger': state.statusbarType == 'danger',
+                                }"> {{ state.statusbar }} </span>
                             </div>
                         </div>
                     </div>
@@ -73,8 +85,8 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
-import { Find, SelectExecutable } from '../../wailsjs/go/main/App'
-import { FolderOpenIcon } from '@heroicons/vue/24/outline'
+import { Find, SelectExecutable, Install, Remove } from '../../wailsjs/go/main/App'
+import { FolderOpenIcon, MagnifyingGlassIcon, TableCellsIcon } from '@heroicons/vue/24/outline'
 
 const state = reactive({
     name: "",
@@ -82,16 +94,36 @@ const state = reactive({
     description: "",
     executable: "",
     argument: "",
-    startMode: "auto",
-
+    startMode: "",
     status: "",
-
-    btnFindEn: true,
-
     statusbar: "Ready",
+    statusbarType: "primary"
 })
 
-function find() {
+function resetForm() {
+    state.displayName = ""
+    state.description = ""
+    state.executable = ""
+    state.argument = ""
+    state.startMode = ""
+    state.status = ""
+    state.statusbar = "Ready"
+    state.statusbarType = "primary"
+}
+
+function isFormValid() {
+    if (state.name == "") return false
+    if (state.executable == "") return false
+    if (state.startMode == "") return false
+    return true
+}
+
+function clear() {
+    state.name = ""
+    resetForm()
+}
+
+function findService() {
     Find(state.name).then(function (service) {
         state.displayName = service.DisplayName
         state.description = service.Description
@@ -100,16 +132,59 @@ function find() {
         state.startMode = service.StartMode
         state.status = service.Status
         state.statusbar = "Find Success"
+        state.statusbarType = "success"
     }).catch(function (err) {
+        resetForm()
         state.statusbar = err
+        state.statusbarType = "warning"
     })
+}
+
+function selectListService() {
+
 }
 
 function selectExecutable() {
     SelectExecutable(state.executable).then(function (selectedExecutable) {
         state.executable = selectedExecutable
-    }).catch(function(err) {
+        state.statusbarType = "success"
+    }).catch(function (err) {
         state.statusbar = err
+        state.statusbarType = "warning"
+    })
+}
+
+function installService() {
+    let service = {
+        Name: state.name,
+        DisplayName: state.displayName,
+        Description: state.description,
+        Executable: state.executable,
+        Argument: state.argument,
+        StartMode: state.startMode,
+    }
+    Install(service).then(function () {
+        clear()
+        state.statusbar = "Service successfully installed"
+        state.statusbarType = "success"
+    }).catch(function (err) {
+        state.statusbar = err
+        state.statusbarType = "danger"
+    })
+}
+
+function updateService() {
+
+}
+
+function removeService() {
+    Remove(state.name).then(function () {
+        clear()
+        state.statusbar = "Service successfully removed"
+        state.statusbarType = "success"
+    }).catch(function (err) {
+        state.statusbar = err
+        state.statusbarType = "danger"
     })
 }
 </script>
