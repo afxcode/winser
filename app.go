@@ -10,6 +10,7 @@ import (
 	"github.com/caarlos0/go-shellwords"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.org/x/sys/windows/svc"
+	"golang.org/x/sys/windows/svc/eventlog"
 	"golang.org/x/sys/windows/svc/mgr"
 )
 
@@ -221,14 +222,41 @@ func (a *App) Install(service Service) error {
 		strings.Split(service.Argument, " ")...,
 	)
 	if err != nil {
-		return err
+		return fmt.Errorf("Install service failed: %s", err)
 	}
 	defer s.Close()
+
+	if err = eventlog.InstallAsEventCreate(service.Name, eventlog.Error|eventlog.Warning|eventlog.Info); err != nil {
+		s.Delete()
+		return fmt.Errorf("Install event log failed: %s", err)
+	}
 	return nil
 }
 
 func (a *App) Update(service Service) (err error) {
+	m, err := mgr.Connect()
+	if err != nil {
+		return err
+	}
+	defer m.Disconnect()
 
+	s, err := m.OpenService(service.Name)
+	if err != nil {
+		s.Close()
+		return fmt.Errorf("Could not access %s: %v", service.Name, err)
+	}
+
+	sConf, err := s.Config()
+	if err != nil {
+		return fmt.Errorf("Could not access config: %v", err)
+	}
+
+	sConf.StartType = service.StartMode.toSvcStartType()
+	sConf.DisplayName = service.DisplayName
+	sConf.Description = service.Description
+	if err = s.UpdateConfig(sConf); err != nil {
+		return fmt.Errorf("Update service failed: %v", err)
+	}
 	return
 }
 
@@ -245,7 +273,14 @@ func (a *App) Remove(name string) (err error) {
 	}
 	defer s.Close()
 
-	return s.Delete()
+	if err = s.Delete(); err != nil {
+		return fmt.Errorf("Failed to remove %s: %v", name, err)
+	}
+
+	if err = eventlog.Remove(name); err != nil {
+		return fmt.Errorf("Remove event log failed: %s", err)
+	}
+	return
 }
 
 // Control
