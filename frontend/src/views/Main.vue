@@ -40,18 +40,18 @@
                     </select>
                   </div>
                   <div class="flex flex-row">
-                    <label class="w-3/12 fx-input-label "> Executable </label>
+                    <label class="w-3/12 fx-input-label"> Executable </label>
                     <textarea class="w-8/12 fx-input-sq rounded-l resize-none mr-0" type="text" rows="2"
-                      v-model="state.executable" placeholder="Executable" />
+                      v-model="state.executable" placeholder="Executable" :disabled="state.found" />
                     <button class="w-1/12 fx-btn-sq-info rounded-r h-8 ml-0 flex space-x-2 items-center" type="button"
-                      :disabled="state.name == ''" @click="selectExecutable">
+                      :disabled="state.name == '' || state.found" @click="selectExecutable">
                       <FolderOpenIcon class="w-5 h-5" />
                     </button>
                   </div>
                   <div class="flex flex-row">
                     <label class="w-3/12 fx-input-label"> Argument </label>
                     <textarea class="w-9/12 fx-input resize-none" type="file" rows="2" v-model="state.argument"
-                      placeholder="Argument" />
+                      placeholder="Argument" :disabled="state.found" />
                   </div>
                 </div>
                 <div class="flex flex-col w-1/5">
@@ -108,6 +108,7 @@ const state = reactive({
   argument: "",
   startMode: "",
   status: "",
+  found: false,
   statusbar: "Ready",
   statusbarType: "primary"
 })
@@ -119,6 +120,7 @@ function resetForm() {
   state.argument = ""
   state.startMode = ""
   state.status = ""
+  state.found = false
   state.statusbar = "Ready"
   state.statusbarType = "primary"
 }
@@ -143,6 +145,7 @@ function findService() {
     state.argument = service.Argument
     state.startMode = service.StartMode
     state.status = service.Status
+    state.found = true
     state.statusbar = "Find Success"
     state.statusbarType = "success"
   }).catch(function (err) {
@@ -191,8 +194,6 @@ function updateService() {
     Name: state.name,
     DisplayName: state.displayName,
     Description: state.description,
-    Executable: state.executable,
-    Argument: state.argument,
     StartMode: state.startMode,
   }
   Update(service).then(function () {
