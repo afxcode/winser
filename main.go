@@ -10,18 +10,20 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
+const version = "v0.1.0"
+
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:     "Winser - Windows Service Manager",
-		Width:     600,
+		Title:     "Winser - Windows Service Manager - " + version,
+		Width:     640,
 		Height:    390,
-		MinWidth:  600,
+		MinWidth:  640,
 		MinHeight: 390,
-		MaxWidth:  600,
+		MaxWidth:  640,
 		MaxHeight: 390,
 		Assets:    assets,
 		// BackgroundColour: &options.RGBA{R: 255, G: 255, B: 255, A: 0},

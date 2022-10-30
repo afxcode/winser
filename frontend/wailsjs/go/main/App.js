@@ -6,6 +6,10 @@ export function Find(arg1) {
   return window['go']['main']['App']['Find'](arg1);
 }
 
+export function GetServices() {
+  return window['go']['main']['App']['GetServices']();
+}
+
 export function Install(arg1) {
   return window['go']['main']['App']['Install'](arg1);
 }

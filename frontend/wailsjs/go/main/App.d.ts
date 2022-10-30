@@ -4,6 +4,8 @@ import {main} from '../models';
 
 export function Find(arg1:string):Promise<main.Service>;
 
+export function GetServices():Promise<Array<main.Service>>;
+
 export function Install(arg1:main.Service):Promise<Error>;
 
 export function Pause(arg1:string):Promise<Error>;

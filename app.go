@@ -108,6 +108,44 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
+func (a *App) GetServices() (services []Service, err error) {
+	m, err := mgr.Connect()
+	if err != nil {
+		return
+	}
+	defer m.Disconnect()
+
+	names, err := m.ListServices()
+	if err != nil {
+		return
+	}
+
+	for _, name := range names {
+		s, e := m.OpenService(name)
+		if e != nil {
+			continue
+		}
+		defer s.Close()
+
+		sConf, e := s.Config()
+		if e != nil {
+			continue
+		}
+
+		sStatus, e := s.Query()
+		if e != nil {
+			continue
+		}
+
+		services = append(services, Service{
+			Name:        name,
+			DisplayName: sConf.DisplayName,
+			Status:      statusFromSvc(sStatus.State),
+		})
+	}
+	return
+}
+
 func (a *App) Find(name string) (service Service, err error) {
 	m, err := mgr.Connect()
 	if err != nil {
