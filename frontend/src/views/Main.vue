@@ -65,9 +65,12 @@
                   <span v-else-if="state.status == 'unknown'" class="fx-lbl-danger"> UNKNOWN </span>
                   <span v-else class="fx-lbl-danger"> N/A </span>
                   <button class="fx-btn-success" type="button"
-                    :disabled="state.status != 'stopped' && state.status != 'paused'"> START </button>
-                  <button class="fx-btn-danger" type="button" :disabled="state.status != 'running'"> STOP </button>
-                  <button class="fx-btn-warning" type="button" :disabled="state.status != 'running'"> PAUSE </button>
+                    :disabled="state.status != 'stopped' && state.status != 'paused'" @click="startService"> START
+                  </button>
+                  <button class="fx-btn-danger" type="button" :disabled="state.status != 'running'"
+                    @click="stopService"> STOP </button>
+                  <button class="fx-btn-warning" type="button" :disabled="state.status != 'running'"
+                    @click="pauseService"> PAUSE </button>
                 </div>
               </div>
               <div class="flex flex-row w-full mt-2">
@@ -140,8 +143,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
-import { GetServices, Find, SelectExecutable, Install, Remove, Update } from '../../wailsjs/go/main/App'
+import { reactive, onMounted } from 'vue'
+import { GetServices, Find, SelectExecutable, Install, Remove, Update, Start, Stop, Pause } from '../../wailsjs/go/main/App'
 import { FolderOpenIcon, MagnifyingGlassIcon, TableCellsIcon, EyeIcon, ArrowUturnLeftIcon } from '@heroicons/vue/24/outline'
 
 type ListService = {
@@ -289,4 +292,47 @@ function removeService() {
     state.statusbarType = "danger"
   })
 }
+
+function startService() {
+  Start(state.name).then(function () {
+    state.statusbar = "Service successfully started"
+    state.statusbarType = "success"
+  }).catch(function (err) {
+    state.statusbar = err
+    state.statusbarType = "danger"
+  })
+}
+
+function stopService() {
+  Stop(state.name).then(function () {
+    state.statusbar = "Service successfully stopped"
+    state.statusbarType = "success"
+  }).catch(function (err) {
+    state.statusbar = err
+    state.statusbarType = "danger"
+  })
+}
+
+function pauseService() {
+  Pause(state.name).then(function () {
+    state.statusbar = "Service successfully paused"
+    state.statusbarType = "success"
+  }).catch(function (err) {
+    state.statusbar = err
+    state.statusbarType = "danger"
+  })
+}
+
+onMounted(function () {
+  setInterval(function () {
+    if (state.name == "" || !state.found) return
+    Find(state.name).then(function (service) {
+      state.status = service.Status
+    }).catch(function (err) {
+      state.statusbar = err
+      state.statusbarType = "warning"
+    })
+  }, 2000)
+})
+
 </script>
