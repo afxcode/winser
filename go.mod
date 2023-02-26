@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/caarlos0/go-shellwords v1.0.12
 	github.com/wailsapp/wails/v2 v2.1.0
-	golang.org/x/sys v0.1.0
+	golang.org/x/sys v0.5.0
 )
 
 require (
@@ -28,6 +28,6 @@ require (
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	golang.org/x/crypto v0.1.0 // indirect
-	golang.org/x/net v0.1.0 // indirect
-	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 )
