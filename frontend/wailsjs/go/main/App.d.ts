@@ -4,18 +4,22 @@ import {main} from '../models';
 
 export function Find(arg1:string):Promise<main.Service>;
 
+export function GetPinedServices():Promise<Array<main.Service>>;
+
 export function GetServices():Promise<Array<main.Service>>;
 
-export function Install(arg1:main.Service):Promise<Error>;
+export function Install(arg1:main.Service):Promise<void>;
 
-export function Pause(arg1:string):Promise<Error>;
+export function Pause(arg1:string):Promise<void>;
 
-export function Remove(arg1:string):Promise<Error>;
+export function Remove(arg1:string):Promise<void>;
 
 export function SelectExecutable(arg1:string):Promise<string>;
 
-export function Start(arg1:string):Promise<Error>;
+export function Start(arg1:string):Promise<void>;
 
-export function Stop(arg1:string):Promise<Error>;
+export function Stop(arg1:string):Promise<void>;
 
-export function Update(arg1:main.Service):Promise<Error>;
+export function TogglePinService(arg1:string):Promise<boolean>;
+
+export function Update(arg1:main.Service):Promise<void>;

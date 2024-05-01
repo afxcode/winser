@@ -29,6 +29,25 @@
         @apply bg-red-500 text-white active:bg-red-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
     }
 
+    .fx-btn-icon-primary {
+        @apply inline-flex bg-blue-500 text-white active:bg-blue-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 pl-1 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-icon-secondary {
+        @apply inline-flex bg-gray-500 text-white active:bg-gray-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 pl-1 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-icon-info {
+        @apply inline-flex bg-cyan-500 text-white active:bg-cyan-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 pl-1 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-icon-success {
+        @apply inline-flex bg-green-500 text-white active:bg-green-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 pl-1 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-icon-warning {
+        @apply inline-flex bg-orange-500 text-white active:bg-orange-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 pl-1 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+    .fx-btn-icon-danger {
+        @apply inline-flex bg-red-500 text-white active:bg-red-600 font-semibold uppercase text-xs mx-2 mb-1 px-2 pl-1 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 disabled:bg-gray-400 disabled:text-gray-200 disabled:shadow-none;
+    }
+
     .fx-input-sq {
         @apply text-xs mb-2 mr-2 px-2 py-0 placeholder-slate-300 text-slate-600 relative bg-white border-0 outline-none focus:outline-none focus:ring;
     }

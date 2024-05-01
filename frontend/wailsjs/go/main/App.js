@@ -6,6 +6,10 @@ export function Find(arg1) {
   return window['go']['main']['App']['Find'](arg1);
 }
 
+export function GetPinedServices() {
+  return window['go']['main']['App']['GetPinedServices']();
+}
+
 export function GetServices() {
   return window['go']['main']['App']['GetServices']();
 }
@@ -32,6 +36,10 @@ export function Start(arg1) {
 
 export function Stop(arg1) {
   return window['go']['main']['App']['Stop'](arg1);
+}
+
+export function TogglePinService(arg1) {
+  return window['go']['main']['App']['TogglePinService'](arg1);
 }
 
 export function Update(arg1) {

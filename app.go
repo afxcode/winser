@@ -121,18 +121,7 @@ func (a *App) GetServices() (services []Service, err error) {
 	}
 
 	for _, name := range names {
-		s, e := m.OpenService(name)
-		if e != nil {
-			continue
-		}
-		defer s.Close()
-
-		sConf, e := s.Config()
-		if e != nil {
-			continue
-		}
-
-		sStatus, e := s.Query()
+		sConf, sStatus, e := a.getServiceDetail(m, name)
 		if e != nil {
 			continue
 		}
@@ -142,6 +131,23 @@ func (a *App) GetServices() (services []Service, err error) {
 			DisplayName: sConf.DisplayName,
 			Status:      statusFromSvc(sStatus.State),
 		})
+	}
+	return
+}
+
+func (a *App) getServiceDetail(m *mgr.Mgr, name string) (sConf mgr.Config, sStatus svc.Status, err error) {
+	s, err := m.OpenService(name)
+	if err != nil {
+		return
+	}
+	defer s.Close()
+
+	if sConf, err = s.Config(); err != nil {
+		return
+	}
+
+	if sStatus, err = s.Query(); err != nil {
+		return
 	}
 	return
 }
@@ -420,9 +426,6 @@ func (a *App) Pause(name string) (err error) {
 	}
 	if status != Running {
 		return fmt.Errorf("Service is not running")
-	}
-	if status == Paused {
-		return
 	}
 
 	if _, err = s.Control(svc.Pause); err != nil {
